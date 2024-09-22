@@ -1,10 +1,5 @@
 import axiosInstance from "./axios";
-
-interface IUpdatePricing {
-  productId: number;
-  customerId: number;
-  newPrice: number;
-}
+import { IUpdatePricing } from "./interface";
 
 const updatePricing = async (body: IUpdatePricing) => {
   const path = "/pricing";
