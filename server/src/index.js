@@ -1,13 +1,5 @@
-const { Pool } = require('pg');
+const start = require('./app');
 
-const pool = new Pool({
-  user: 'postgres',
-  password: 'postgres',
-});
-
-const query = async (text, params) => pool.query(text, params);
-
-module.exports = {
-  query
-};
+// start the app
+start();
 
