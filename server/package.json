@@ -1,12 +1,32 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "saas-test-server",
+  "version": "0.0.1",
+  "description": "saas server check",
+  "engines": {
+    "node": "20"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "scripts": {
+    "start": "nodemon ./src/index.js",
+    "test": "test",
+    "migrate": "node-pg-migrate",
+    "migrate:up": "DATABASE_URL=postgres://postgres:postgres@localhost:5432 npm run migrate up"
+  },
+  "main": "index.js",
+  "keywords": [
+    "saas"
+  ],
+  "author": "padulkemid",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.0",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.11.0",
+    "globals": "^15.9.0",
+    "node-pg-migrate": "^7.6.1",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3"
+  }
 }
+
