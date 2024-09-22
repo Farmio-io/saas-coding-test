@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import repo from "./repo";
 import { IUpdatePricing } from "./interface";
 
+// we can use mutation.mutateAsync later in the component
 export const useUpdatePricing = () =>
   useMutation({
     mutationKey: ["update-pricing"],
