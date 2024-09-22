@@ -7,3 +7,5 @@ up -d` inside `./docker`.
 1. go to `./server` and migrate the db with `npm run migrate:up`
 2. I included seeds but you can freely do stuff
 3. run the server with `npm start` it should go to `http://localhost:8080`
+4. go to `./client` and run `npm run dev`
+5. it should go to `http://localhost:3000`
