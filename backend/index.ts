@@ -1,6 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
+import cors from "cors";
+
 const prisma = new PrismaClient();
 
 dotenv.config();
@@ -9,6 +11,7 @@ const port = process.env.PORT || 3000;
 
 const app: Express = express();
 app.use(express.json());
+app.use(cors());
 
 // Upsert pricing
 app.post("/api/v1/price", async (req: Request, res: Response) => {
@@ -20,8 +23,6 @@ app.post("/api/v1/price", async (req: Request, res: Response) => {
         where: { product_id, customer_id },
         orderBy: { effective_date: "desc" },
       });
-
-      console.log(previousPricing);
 
       let newPricing;
 
@@ -64,11 +65,15 @@ app.post("/api/v1/price", async (req: Request, res: Response) => {
 
 // Get active price
 app.get("/api/v1/price", async (req: Request, res: Response) => {
-  const { product_id, customer_id } = req.params;
+  const { product_id, customer_id } = req.query;
+  const query: Record<string, unknown> = {};
+
+  if (product_id) query["product_id"] = product_id;
+  if (customer_id) query["customer_id"] = customer_id;
 
   try {
     const prices = await prisma.pricing.findMany({
-      where: { product_id, customer_id },
+      where: query,
       include: { customer: true, product: true },
     });
 
@@ -77,7 +82,7 @@ app.get("/api/v1/price", async (req: Request, res: Response) => {
     });
   } catch (e) {
     console.error("Get failed " + e);
-    res.status(500).json({ error: "Insert failed " + e });
+    res.status(500).json({ error: "Get failed " + e });
   }
 });
 
@@ -97,10 +102,21 @@ app.get(
       });
     } catch (e) {
       console.error("Get failed " + e);
-      res.status(500).json({ error: "Insert failed " + e });
+      res.status(500).json({ error: "Get failed " + e });
     }
   }
 );
+
+app.get("/api/v1/customers", async (req: Request, res: Response) => {
+  try {
+    const customers = await prisma.customer.findMany();
+    console.log(customers);
+    res.status(200).json({ data: customers });
+  } catch (e) {
+    console.error("Get failed " + e);
+    res.status(500).json({ error: "Get failed " + e });
+  }
+});
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
